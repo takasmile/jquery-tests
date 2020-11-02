@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>02 Attributes</title>
+    </head>
+    <body>
+        <div>
+            <a class="first">link first</a>
+            <a class="second">link second</a>
+        </div>
+
+        <script src="../lib/jquery-3.5.1.min.js"></script>
+        <script>
+            $("a.first").attr("href", "https://www.baidu.com");
+
+            $("a.second").attr({
+                title: "test link",
+                href: "https://www.google.com",
+            });
+        </script>
+    </body>
+</html>

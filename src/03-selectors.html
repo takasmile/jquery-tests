@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>03 Selectors</title>
+        <style>
+            .test {
+                color: green;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <h1>h1</h1>
+            <h2>h2-1</h2>
+            <h2>h2-2</h2>
+            <h2>h2-3</h2>
+        </div>
+
+        <script src="../lib/jquery-3.5.1.min.js"></script>
+        <script>
+            $("h1").html("Hello Alex");
+            $("h1").addClass("test");
+
+            $("#container").find("h2").eq(1).html("The second h2");
+        </script>
+    </body>
+</html>
