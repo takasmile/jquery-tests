@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Deferred Test</title>
+    </head>
+    <body>
+        <script src="../lib/jquery-3.5.1.min.js"></script>
+        <script>
+            $(document).ready(() => {
+                let time = 1000;
+                let deltaTime = 1000;
+                [test01, test02, test03, test04].forEach((d) => {
+                    d(time);
+                    time += deltaTime;
+                });
+            });
+
+            // 基本使用方法
+            function test01(time) {
+                const MESSAGE = "test01";
+                // 比较：将dtd作为wait函数外部对象和内部对象的区别
+                // let dtd = $.Deferred();
+                let wait = function () {
+                    let dtd = $.Deferred();
+                    setTimeout(() => {
+                        console.log(MESSAGE + " Finished");
+                        dtd.resolve(MESSAGE);
+                    }, time);
+
+                    // return dtd; // 注意两者的区别
+                    return dtd.promise();
+                };
+
+                $.when(wait())
+                    .done((data) => console.log("data: ", data))
+                    .fail(() => console.log("Failed"));
+            }
+
+            // Deferred直接接受函数作为参数
+            // 要求此函数以dtd(用作Deferred实例)为第一个参数
+            function test02(time) {
+                const MESSAGE = "test02";
+                let wait = function (dtd) {
+                    setTimeout(() => {
+                        console.log(MESSAGE + " Finished");
+                        dtd.resolve(MESSAGE);
+                    }, time);
+
+                    return dtd.promise();
+                };
+
+                $.Deferred(wait)
+                    .done((data) => console.log("data: " + data))
+                    .fail(() => console.log(MESSAGE + " fail"));
+            }
+
+            // 直接在wait函数上部署deferred接口
+            function test03(time) {
+                const MESSAGE = "test03";
+
+                let dtd = $.Deferred();
+                let wait = function (dtd) {
+                    setTimeout(() => {
+                        console.log(MESSAGE + " Finished");
+                        dtd.resolve(MESSAGE);
+                    }, time);
+                };
+
+                dtd.promise(wait);
+
+                wait.done((data) => console.log("data: " + data)).fail(() => console.log(MESSAGE + "fail"));
+
+                wait(dtd);
+            }
+
+            // then与done的区别
+            function test04(time) {
+                setTimeout(testContent, time);
+
+                function testContent() {
+                    console.log("test04 Finished");
+                    var defer = jQuery.Deferred();
+                    let count = 0;
+
+                    defer
+                        .done(function (a, b) {
+                            count++;
+                            console.log(count + ": a = " + a + ", b = " + b);
+                            return a * b;
+                        })
+                        .done(function (result) {
+                            count++;
+                            console.log(count + ": result = " + result);
+                        })
+                        .then(function (a, b) {
+                            count++;
+                            console.log(count + ": a = " + a + ", b = " + b);
+                            return a * b;
+                        })
+                        .done(function (result) {
+                            count++;
+                            console.log(count + ": result = " + result);
+                        })
+                        .then(function (a, b) {
+                            count++;
+                            console.log(count + ": a = " + a + ", b = " + b);
+                            return a * b;
+                        })
+                        .done(function (result) {
+                            count++;
+                            console.log(count + ": result = " + result);
+                        });
+
+                    defer.resolve(2, 3);
+                }
+            }
+        </script>
+    </body>
+</html>
