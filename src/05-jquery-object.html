@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Jquery Object</title>
+    </head>
+    <body>
+        <div id="container"></div>
+
+        <script src="../lib/jquery-3.5.1.min.js"></script>
+        <script src="../utils.js"></script>
+        <script>
+            const container = $("#container");
+
+            $(function () {
+                let titleStr = "Test";
+                [test01].forEach((d, i) => {
+                    addSeperator(container, titleStr + (i + 1), d)();
+                });
+            });
+
+            function test01() {
+                let target1 = document.createElement("div");
+                target1.innerHTML = "<td>Hello <b> World1 </b> !</td>";
+                container.append($(target1));
+
+                let target2 = $("<div></div>");
+                container.append(target2);
+                $(target2).html("<td>Hello <b> World2 </b> !</td>");
+            }
+        </script>
+    </body>
+</html>

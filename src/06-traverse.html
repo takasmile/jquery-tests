@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Traverse Test</title>
+    </head>
+    <body>
+        <div class="grandparent">
+            <div class="parent">
+                <div class="child">
+                    <span class="subchild"></span>
+                </div>
+            </div>
+            <div class="surrogateParent1"></div>
+            <div class="surrogateParent2"></div>
+        </div>
+
+        <script src="../lib/jquery-3.5.1.min.js"></script>
+        <script>
+            $(() => {
+                test();
+            });
+
+            function test() {
+                let strs = [
+                    // Selecting an element's direct parent:
+                    // returns [ div.child ]
+                    "$( 'span.subchild' ).parent()",
+
+                    // Selecting all the parents of an element that match a given selector:
+
+                    // returns [ div.parent ]
+                    "$( 'span.subchild' ).parents( 'div.parent' )",
+
+                    // returns [ div.child, div.parent, div.grandparent ]
+                    "$( 'span.subchild' ).parents()",
+
+                    // Selecting all the parents of an element up to, but *not including* the selector:
+
+                    // returns [ div.child, div.parent ]
+                    "$( 'span.subchild' ).parentsUntil( 'div.grandparent' )",
+
+                    // Selecting the closest parent, note that only one parent will be selected
+                    // and that the initial element itself is included in the search:
+
+                    // returns [ div.child ]
+                    "$( 'span.subchild' ).closest( 'div' )",
+
+                    // returns [ div.child ] as the selector is also included in the search:
+                    "$( 'div.child' ).closest( 'div' )",
+
+                    // Selecting an element's direct children:
+
+                    // returns [ div.parent, div.surrogateParent1, div.surrogateParent2 ]
+                    $("div.grandparent").children("div"),
+
+                    // Finding all elements within a selection that match the selector:
+
+                    // returns [ div.child, div.parent, div.surrogateParent1, div.surrogateParent2 ]
+                    $("div.grandparent").find("div"),
+
+                    // Selecting a next sibling of the selectors:
+
+                    // returns [ div.surrogateParent1 ]
+                    "$( 'div.parent' ).next()",
+
+                    // Selecting a prev sibling of the selectors:
+
+                    // returns [] as No sibling exists before div.parent
+                    "$( 'div.parent' ).prev()",
+
+                    // Selecting all the next siblings of the selector:
+
+                    // returns [ div.surrogateParent1, div.surrogateParent2 ]
+                    "$( 'div.parent' ).nextAll()",
+
+                    // returns [ div.surrogateParent1 ]
+                    "$( 'div.parent' ).nextAll().first()",
+
+                    // returns [ div.surrogateParent2 ]
+                    "$( 'div.parent' ).nextAll().last()",
+
+                    // Selecting all the previous siblings of the selector:
+
+                    // returns [ div.surrogateParent1, div.parent ]
+                    "$( 'div.surrogateParent2' ).prevAll()",
+
+                    // returns [ div.surrogateParent1 ]
+                    "$( 'div.surrogateParent2' ).prevAll().first()",
+
+                    // returns [ div.parent ]
+                    "$( 'div.surrogateParent2' ).prevAll().last()",
+
+                    // Selecting an element's siblings in both directions that matches the given selector:
+
+                    // returns [ div.surrogateParent1, div.surrogateParent2 ]
+                    "$( 'div.parent' ).siblings()",
+
+                    // returns [ div.parent, div.surrogateParent2 ]
+                    "$( 'div.surrogateParent1' ).siblings()",
+                ];
+
+                strs.forEach((d, i) => {
+                    console.log(i + 1 + ": " + d + " -> ");
+                    console.log(eval(d));
+                });
+            }
+        </script>
+    </body>
+</html>
